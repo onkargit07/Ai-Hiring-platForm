@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Resume Upload</title>
+</head>
+<body>
+    <h2>Test Application Upload</h2>
+    <form id="uploadForm">
+        <p><label>Job ID: <input type="text" id="jobId" value="3f9e23e2-f958-4d0f-94c3-1c6e5ba1b7da"></label></p>
+        <p><label>Skills (JSON): <input type="text" id="skills" value='["JavaScript","React","Node.js"]'></label></p>
+        <p><label>Experience: <input type="text" id="experience" value="3 years of web development"></label></p>
+        <p><label>Resume: <input type="file" id="resume" accept=".pdf,.doc,.docx"></label></p>
+        <p><label>Token: <input type="text" id="token" placeholder="Paste your auth token here" style="width: 500px"></label></p>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('jobPostId', document.getElementById('jobId').value);
+            formData.append('skills', document.getElementById('skills').value);
+            formData.append('experience', document.getElementById('experience').value);
+            formData.append('resume', document.getElementById('resume').files[0]);
+            
+            const token = document.getElementById('token').value;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/applications/apply', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<pre>Error: ${error.message}</pre>`;
+            }
+        });
+    </script>
+</body>
+</html>

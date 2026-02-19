@@ -1,0 +1,98 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  RECRUITER
+  CANDIDATE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  VIEWED
+  SHORTLISTED
+  REJECTED
+  SELECTED
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  password      String
+  fullName      String
+  role          UserRole
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  jobPosts      JobPost[]     // For recruiters
+  applications  Application[] // For candidates
+
+  @@map("users")
+}
+
+model JobPost {
+  id                    String        @id @default(uuid())
+  title                 String
+  description           String        @db.Text
+  skillsRequired        String[]
+  experienceLevel       String
+  location              String
+  isRemote              Boolean       @default(false)
+  salaryMin             Int?
+  salaryMax             Int?
+  education             String?
+  customQuestions       Json?         // Array of custom screening questions
+  requiredFields        Json?         // Array of required field names
+  optionalFields        Json?         // Array of optional field names
+  isActive              Boolean       @default(true)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  // Relations
+  recruiterId           String
+  recruiter             User          @relation(fields: [recruiterId], references: [id])
+  applications          Application[]
+
+  @@map("job_posts")
+}
+
+model Application {
+  id                    String              @id @default(uuid())
+  status                ApplicationStatus   @default(APPLIED)
+  resumeUrl             String
+  
+  // Dynamic form data
+  skills                String[]
+  experience            String
+  educationLevel        String?
+  portfolio             String?
+  coverLetter           String?           @db.Text
+  customAnswers         Json?             // Answers to custom questions
+  
+  // AI Scoring
+  suitabilityScore      Float?            // 0-100 overall match score
+  projectComplexityScore Float?           // 0-100 project complexity relative to experience
+  experienceYears       Float?            // Extracted years of experience
+  isOverqualified       Boolean?          // True if candidate experience >> job requirement
+  aiAnalysis            Json?             // Detailed AI analysis with complexity breakdown
+  
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+  
+  // Relations
+  candidateId           String
+  candidate             User              @relation(fields: [candidateId], references: [id])
+  jobPostId             String
+  jobPost               JobPost           @relation(fields: [jobPostId], references: [id])
+
+  @@unique([candidateId, jobPostId]) // One application per job per candidate
+  @@map("applications")
+}
