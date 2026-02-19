@@ -335,7 +335,7 @@ export default function JobApplicationsPage() {
 
                   <div className="flex flex-wrap gap-2 pt-4 border-t">
                     <a
-                      href={`http://localhost:5000${app.resumeUrl}`}
+                      href={`${import.meta.env.VITE_API_URL || ''}${app.resumeUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-secondary inline-flex items-center space-x-2"

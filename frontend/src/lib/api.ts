@@ -1,12 +1,20 @@
 import axios from 'axios'
 import { useAuthStore } from '../store/authStore'
 
+// Use environment variable for API URL, fallback to /api for development proxy
+const apiUrl = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api'
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
 })
+
+// Export base URL for file downloads
+export const getApiBaseUrl = () => import.meta.env.VITE_API_URL || ''
 
 // Request interceptor to add token
 api.interceptors.request.use(
