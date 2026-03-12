@@ -74,31 +74,56 @@ export default function JobApplicationsPage() {
               <span className="badge badge-warning">{job.experienceLevel}</span>
             </div>
             <p className="text-gray-600 mb-4">{job.description}</p>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Required Skills:</p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {job.skillsRequired.map((skill) => (
-                    <span key={skill} className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-sm">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Required Skills:</p>
+              <div className="flex flex-wrap gap-2">
+                {job.skillsRequired.map((skill) => (
+                  <span key={skill} className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-sm">
+                    {skill}
+                  </span>
+                ))}
               </div>
-              <div className="text-right">
-                <p className="text-3xl font-bold text-primary-600">{applications.length}</p>
-                <p className="text-sm text-gray-600">Total Applications</p>
-              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Statistics Summary */}
+        {applications.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="card bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+              <p className="text-sm text-blue-700 mb-1">Total Applications</p>
+              <p className="text-3xl font-bold text-blue-900">{applications.length}</p>
+            </div>
+            <div className="card bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
+              <p className="text-sm text-yellow-700 mb-1">Top Candidates</p>
+              <p className="text-3xl font-bold text-yellow-900">{applications.filter(app => app.isTopCandidate).length}</p>
+            </div>
+            <div className="card bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+              <p className="text-sm text-green-700 mb-1">Shortlisted</p>
+              <p className="text-3xl font-bold text-green-900">{applications.filter(app => app.status === 'SHORTLISTED').length}</p>
+            </div>
+            <div className="card bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+              <p className="text-sm text-purple-700 mb-1">Avg AI Score</p>
+              <p className="text-3xl font-bold text-purple-900">
+                {(applications.reduce((sum, app) => sum + (app.suitabilityScore || 0), 0) / applications.length).toFixed(0)}
+              </p>
             </div>
           </div>
         )}
 
         {/* Applications List */}
         <div className="card">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Applications (AI Sorted)</h2>
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-2xl font-bold text-gray-900">All Applications (AI Sorted)</h2>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Award className="h-4 w-4 text-yellow-500" />
+                <span>= Top 10 Candidates</span>
+              </div>
+            </div>
             <p className="text-sm text-gray-600">
-              Top 10 candidates marked with <Award className="inline h-4 w-4 text-yellow-500" />
+              Showing all <span className="font-semibold text-primary-600">{applications.length}</span> candidates ranked by AI • 
+              Top 10 highlighted in <span className="text-yellow-600 font-semibold">yellow</span>
             </p>
           </div>
 
