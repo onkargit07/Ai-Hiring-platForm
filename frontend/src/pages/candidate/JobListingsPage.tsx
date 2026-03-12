@@ -465,7 +465,7 @@ export default function JobListingsPage() {
                       </Link>
 
                       {/* Applicants count */}
-                      <p className="text-sm text-gray-500 mb-3">{job._count?.applications || Math.floor(Math.random() * 50)} replies</p>
+                      <p className="text-sm text-gray-500 mb-3">{job._count?.applications || 0} applications</p>
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2 mb-4">

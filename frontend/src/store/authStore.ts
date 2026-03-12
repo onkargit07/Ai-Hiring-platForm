@@ -5,6 +5,7 @@ interface User {
   id: string
   email: string
   fullName: string
+  company?: string
   role: 'RECRUITER' | 'CANDIDATE'
 }
 

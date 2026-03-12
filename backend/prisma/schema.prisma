@@ -27,6 +27,7 @@ model User {
   email         String        @unique
   password      String
   fullName      String
+  company       String?       // Company name (for recruiters)
   role          UserRole
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt

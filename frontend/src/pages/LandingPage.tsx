@@ -505,7 +505,7 @@ export default function LandingPage() {
           </div>
           
           <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-            <p>&copy; 2024 TalentAI. All rights reserved. Built with ❤️ for better hiring.</p>
+            <p>&copy; 2026 TalentAI. All rights reserved. Built with ❤️ for better hiring.</p>
           </div>
         </div>
       </footer>
