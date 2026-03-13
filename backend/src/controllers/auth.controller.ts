@@ -13,7 +13,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password, fullName, company, role } = req.body;
+    const { email, password, fullName, role } = req.body;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -30,7 +30,6 @@ export const register = async (req: Request, res: Response) => {
         email,
         password: hashedPassword,
         fullName,
-        company: company || null,
         role
       }
     });
@@ -49,7 +48,6 @@ export const register = async (req: Request, res: Response) => {
         id: user.id,
         email: user.email,
         fullName: user.fullName,
-        company: user.company,
         role: user.role
       }
     });
@@ -94,7 +92,6 @@ export const login = async (req: Request, res: Response) => {
         id: user.id,
         email: user.email,
         fullName: user.fullName,
-        company: user.company,
         role: user.role
       }
     });
