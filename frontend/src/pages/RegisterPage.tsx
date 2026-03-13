@@ -11,7 +11,6 @@ interface RegisterForm {
   password: string
   confirmPassword: string
   fullName: string
-  company?: string
   role: 'RECRUITER' | 'CANDIDATE'
 }
 
@@ -24,7 +23,6 @@ export default function RegisterPage() {
   })
 
   const password = watch('password')
-  const selectedRole = watch('role')
 
   const onSubmit = async (data: RegisterForm) => {
     try {
@@ -123,23 +121,6 @@ export default function RegisterPage() {
               />
               {errors.fullName && <p className="mt-2 text-sm text-red-600">{errors.fullName.message}</p>}
             </div>
-
-            {selectedRole === 'RECRUITER' && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Company Name
-                </label>
-                <input
-                  {...register('company', { 
-                    required: selectedRole === 'RECRUITER' ? 'Company name is required for recruiters' : false 
-                  })}
-                  type="text"
-                  className="input-field"
-                  placeholder="Acme Corp"
-                />
-                {errors.company && <p className="mt-2 text-sm text-red-600">{errors.company.message}</p>}
-              </div>
-            )}
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
