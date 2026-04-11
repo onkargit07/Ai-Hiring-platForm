@@ -2,7 +2,7 @@
 
 A full-stack web application that revolutionizes hiring using **Google Gemini AI** to intelligently rank candidates based on skills, experience, and project complexity.
 
-## ✨ Key Features
+## ✨ Key Featuress
 
 ### 🎯 For Recruiters
 - **Create Job Postings** with custom requirements and screening questions
